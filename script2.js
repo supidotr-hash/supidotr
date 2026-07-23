@@ -1,4 +1,668 @@
-// Хранит данные филиалов: название, номер, адрес
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const branch = {
 	ww: ['Метрополь', '+996703556607', 'ул.Фрунзе 340 (2этаж)', 'Пн-Вс: 10:00–21:00'],
 	we: ['Юнусалиева', '+996703556604', 'ул. Юнусалиева, д.171/3 (2этаж)', 'Пн-Вс: 10:00–21:00'],
@@ -7,14 +671,11 @@ const branch = {
 	tp: ['Технопоинт', '+996703556606', 'улица Курманжан Датка, 207/1', 'Пн-Вс: 10:00–21:00'],
 };
 
-// Следит за появлением заказов в DOM
 const observer = new MutationObserver(() => {
 	const allParagraphs = Array.from(document.querySelectorAll('p'));
 
-	// Фильтрует абзацы с текстом "Заказ #"
 	const orderNumberElements = allParagraphs.filter((el) => el.textContent.includes('Заказ #'));
 
-	// Помечает общий контейнер заказов
 	if (orderNumberElements.length) {
 		const orderContainer = orderNumberElements[0].parentElement.parentElement.parentElement;
 		if (!orderContainer.classList.contains('orderContainer')) {
@@ -22,8 +683,6 @@ const observer = new MutationObserver(() => {
 		}
 	}
 	
-	
-	//Добавить кнопку поиска
 	const targetBlock = Array.from(document.querySelectorAll('button')).find(el => el.textContent.trim() === 'Отметить как прочитанное');
 	if (targetBlock && !document.querySelector('.searchOrder')) {
 	    const searchOrderBlock = document.createElement('div');
@@ -35,8 +694,6 @@ const observer = new MutationObserver(() => {
 	    targetBlock.before(searchOrderBlock);
 	}
 	
-
-	// Обрабатывает каждый блок заказа
 	orderNumberElements.forEach((orderNumberElement) => {
 		const orderCardElement = orderNumberElement.parentElement.parentElement;
 
@@ -45,11 +702,9 @@ const observer = new MutationObserver(() => {
 			orderCardElement.nextElementSibling.classList.add('orderProductList');
 			orderNumberElement.classList.add('orderNumberBtn');
 
-			// Отмечает строку доставки
 			const deliveryParagraph = orderCardElement.querySelectorAll('p')[3];
 			deliveryParagraph.classList.add('deliveryInfo');
 
-			// // Добавляет кнопку "Телефон"
 			const phoneBlock = Array.from(orderCardElement.querySelectorAll('div'))
 				.find((div) => div.innerText.includes('Телефон'));
 			if (phoneBlock?.children[1]) {
@@ -60,19 +715,16 @@ const observer = new MutationObserver(() => {
 				orderNumberElement.after(phoneNumberButton);
 			}
 			
-			// Добавляет кнопку "1C"
 			const oneCButton = document.createElement('p');
 			oneCButton.classList.add('copyTo1CBtn');
 			oneCButton.textContent = '1C';
 			orderNumberElement.after(oneCButton);
 
-			// Создаёт блок для кнопок филиалов
 			const orderWrapper = orderNumberElement.parentElement;
 			const branchButtonsWrapper = document.createElement('div');
 			branchButtonsWrapper.classList.add('branchWrapper');
 			orderWrapper.after(branchButtonsWrapper);
 			
-			// Создаёт кнопки филиалов
 			const branchKeys = ['ww', 'we', 'wr', 'wt', 'tp'];
 			branchKeys.forEach((key) => {
 				const [name] = branch[key];
@@ -82,7 +734,6 @@ const observer = new MutationObserver(() => {
 				branchButtonsWrapper.appendChild(branchBtn);
 			});
 
-			// Добавляет классы к товарам и помечает количество
 			const productListBlock = orderCardElement.nextElementSibling;
 			const productTitleClasses = [...productListBlock.querySelector('p').classList];
 			const productTitles = productListBlock.querySelectorAll(
@@ -133,17 +784,14 @@ const observer = new MutationObserver(() => {
 	}
 });
 
-// Запускает наблюдение за DOM
 observer.observe(document, { childList: true, subtree: true });
 
-// Запускает функцию клика по нажатию Enter
 document.addEventListener( 'keyup', event => {
   if(event.code === 'Enter' && document.activeElement.closest('.orderProductList')) {
   	document.activeElement.closest('.orderProductList').querySelector('button').click()
   }
 });
 
-// Обрабатывает клики по кнопкам в заказе
 document.addEventListener('click', (event) => {
 	if (event.target.closest('.orderContainer')) {
 		const clickedOrderCard = event.target.closest('.orderCard') || event.target.closest('.orderProductList')?.previousElementSibling;
@@ -154,18 +802,15 @@ document.addEventListener('click', (event) => {
 		const phoneNumberCopy = clickedOrderCard.querySelector('.phoneNumberCopy');
 		let copiedText;
 
-		// Копирует номер заказа
 		if (event.target.matches('.orderNumberBtn')) {
 			navigator.clipboard.writeText(`${orderNumberBtn.innerText.replace(/\D/g, '')}`)
 		}
 
-		// Копирует номер телефона без префикса
 		if (event.target.matches('.phoneNumberButton')) {
 			const fullText = phoneNumberCopy.innerText;
 			navigator.clipboard.writeText(fullText.replace(/^Телефон:\s*/, '').trim())
 		}
 
-		// Копирует данные выбранного филиала
 		if (event.target.matches('.branchBtn')) {
 			const branchKey = event.target.classList[1];
 			const [branchName, branchPhone, branchAddress, branchTime] = branch[branchKey];
@@ -173,20 +818,17 @@ document.addEventListener('click', (event) => {
 			navigator.clipboard.writeText(`Заказ ${d[1].slice(1)} забирать с ${branchName}\nТелефон: ${branchPhone}\nАдрес: ${branchAddress}\n${branchTime}`);
 		}
 
-		// Копирует текст для 1С
 		if (event.target.matches('.copyTo1CBtn')) {
 			const formattedDate = formatFutureDate(deliveryInfo.innerText);
 			navigator.clipboard.writeText(`НЕ СОБРАН / ${orderNumberBtn.innerText} / ${formattedDate} / О!Маркет`);
 		}
 		
-		// Копирует название товара
 		if (event.target.matches('.productTitle')) {
 			navigator.clipboard.writeText(event.target.innerText);
 		}
 	}
 });
 
-// Возвращает дату доставки в формате ДД.ММ.ГГГГ + время
 function formatFutureDate(input) {
 	const months = {
 		"января": "01",
