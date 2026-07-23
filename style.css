@@ -1,3 +1,147 @@
-body {
-    background: white;
+/* 1 */
+.tempScreen {
+	position: fixed;
+	top: -9999px;
+	left: 0;
+	z-index: -1;
+	width: 800px;
+	padding: 50px;
+
+	.cart-page__checkbox,
+	.cart-page__product-controls,
+	.cart-page__product-avail {
+		opacity: 0;
+	}
+
+	.cart-page__product-accessories,
+	.cart-page__btn-create-order,
+	.cart-page__product-count-btn {
+		display: none;
+	}
+
+	.header__logo {
+		width: 130px;
+		height: 40px;
+		margin-bottom: 20px;
+	}
+
+	.cart-page__product-container {
+		padding: 20px 8px;
+	}
+
+	.cart-page__total-price-amount,
+	.cart-page__product-count {
+		width: auto;
+		min-width: fit-content;
+	}
+	
+	.cart-page__total-amount-wrapper {
+		margin-top: 20px;
+	}
+}
+
+
+span.ui-checkbox__icon {
+    margin-right: 8px;
+}
+
+span.ui-checkbox__title {
+    margin-left: 0px;
+}
+
+label.product-avail-modal__filter {
+    cursor: pointer;
+}
+
+/* 2 */
+p.btnBlock {
+  background: #eef0f4;
+  border-radius: 9px;
+  padding: 12px 17px;
+  margin-right: 10px;
+  color: #58595b;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btnContent {
+  display: flex;
+  flex-direction: row;
+  padding-left: 16px;
+  padding-bottom: 12px;
+}
+
+.counted td.ant-table-cell:nth-child(3) {
+  color: red;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+p.btnBlock:hover {
+    background: #1e9353;
+    transition: 0.2s;
+    color: white;
+}
+
+tr td.ant-table-cell:nth-child(1):hover {
+    transition: 0.2s;
+    color: #2b2b2b;
+}
+
+tr td.ant-table-cell:nth-child(1) {
+    font-size: 17px;
+    text-align: center;
+    color: #939393;
+}
+
+/* 3 */
+p.branchBtn, p.copyTo1CBtn, .sc-kTbCBX.jSzaCP, .phoneNumberButton, .productTitle {
+    margin: 0px;
+    padding: 3px 15px;
+    border-radius: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+p.branchBtn:hover, .sc-kTbCBX.jSzaCP:hover, p.copyTo1CBtn:hover, .phoneNumberButton:hover, .productTitle:hover {
+	box-shadow: 0px 2px 3px -1px #000000b3;
+	background: rgb(99 204 255);
+}
+
+p.branchBtn, .sc-kTbCBX.jSzaCP, p.copyTo1CBtn, .phoneNumberButton, .productTitle {
+	background: rgb(239 239 239);
+}
+
+.productTitle {
+	margin-block: 6px;
+}
+
+.multipleQuantity {
+	background: rgb(255 0 0);
+}
+
+.branchWrapper {
+    margin-bottom: 10px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.searchOrder input[type="text"] {
+    display: inline-block;
+    cursor: default;
+    border: 1px solid rgb(74, 74, 74);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+    border-radius: 8px;
+    color: rgb(74, 74, 74);
+    padding: 9px 16px;
+    background: rgb(255, 255, 255);
+    white-space: nowrap;
+}
+
+.searchOrder input:focus {
+  outline: none;
 }
