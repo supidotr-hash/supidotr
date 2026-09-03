@@ -71,7 +71,7 @@ p.btnBlock {
   padding-bottom: 12px;
 }
 
-.counted td.ant-table-cell:nth-child(3) {
+.counted {
   color: red;
   font-weight: bold;
   font-size: 20px;
@@ -95,7 +95,7 @@ tr td.ant-table-cell:nth-child(1) {
 }
 
 /* 3 */
-p.branchBtn, p.copyTo1CBtn, .sc-kTbCBX.jSzaCP, .phoneNumberButton, .productTitle {
+p.branchBtn, p.copyTo1CBtn, .orderNumberBtn, .sc-kTbCBX.jSzaCP, .phoneNumberButton, .productTitle {
     margin: 0px;
     padding: 3px 15px;
     border-radius: 20px;
@@ -104,12 +104,12 @@ p.branchBtn, p.copyTo1CBtn, .sc-kTbCBX.jSzaCP, .phoneNumberButton, .productTitle
     transition: 0.3s;
 }
 
-p.branchBtn:hover, .sc-kTbCBX.jSzaCP:hover, p.copyTo1CBtn:hover, .phoneNumberButton:hover, .productTitle:hover {
+p.branchBtn:hover, .sc-kTbCBX.jSzaCP:hover, p.copyTo1CBtn:hover, .orderNumberBtn:hover, .phoneNumberButton:hover, .productTitle:hover {
 	box-shadow: 0px 2px 3px -1px #000000b3;
 	background: rgb(99 204 255);
 }
 
-p.branchBtn, .sc-kTbCBX.jSzaCP, p.copyTo1CBtn, .phoneNumberButton, .productTitle {
+p.branchBtn, .sc-kTbCBX.jSzaCP, p.copyTo1CBtn, .orderNumberBtn, .phoneNumberButton, .productTitle {
 	background: rgb(239 239 239);
 }
 

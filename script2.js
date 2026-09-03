@@ -668,6 +668,7 @@ const branch = {
 	we: ['Юнусалиева', '+996703556604', 'ул. Юнусалиева, д.171/3 (2этаж)', 'Пн-Вс: 10:00–21:00'],
 	wr: ['Ала-Арча', '+996703556608', 'проспект Чынгыза Айтматова, д. 299в (2 этаж)', 'Пн-Пт: 10:00–21:00, Сб-Вс: 10:00–22:00'],
 	wt: ['Вефа', '+996703556609', 'улица Максима Горького, 27/1', 'Пн-Вс: 10:00–22:00'],
+	wu: ['Аламедин-1', '+996703556612', 'ул. Ауэзова, 3а', 'Пн-Вс: 10:00–21:00'],
 	tp: ['Технопоинт', '+996703556606', 'улица Курманжан Датка, 207/1', 'Пн-Вс: 10:00–21:00'],
 };
 
@@ -725,7 +726,7 @@ const observer = new MutationObserver(() => {
 			branchButtonsWrapper.classList.add('branchWrapper');
 			orderWrapper.after(branchButtonsWrapper);
 			
-			const branchKeys = ['ww', 'we', 'wr', 'wt', 'tp'];
+			const branchKeys = ['ww', 'we', 'wu', 'wr', 'wt', 'tp'];
 			branchKeys.forEach((key) => {
 				const [name] = branch[key];
 				const branchBtn = document.createElement('p');
@@ -876,5 +877,5 @@ function formatFutureDate(input) {
 	const mm = String(targetDate.getMonth() + 1).padStart(2, '0');
 	const yyyy = targetDate.getFullYear();
 
-	return `${dd}.${mm}.${yyyy} ${timeRange}`;
+	return `${dd}.${mm}.${yyyy} ${timeRange}`;dsdd
 }

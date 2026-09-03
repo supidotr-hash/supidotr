@@ -664,13 +664,14 @@
 
 
 document.addEventListener("click", function (el) {
-	let order = document.querySelector('.display-large-700')?.textContent;
+	let order = new URLSearchParams(window.location.search).get('order_id');
 	let data = [...document.querySelectorAll('.body-small-400._label_1kikn_10')];
 	let get = t => data.find(e => e.textContent.trim() === t)?.nextElementSibling?.innerText;
 	let delivery = get('Тип доставки');
 	let text;
 	
 	if (el.target.matches('.btnOrderButton')) navigator.clipboard.writeText(order);
+	
 	
 	if (el.target.matches('.btn1CButton')) {
 		if (delivery.includes('С магазина')) text = `Самовывоз / Код: ${get('Код выдачи')}`;
@@ -688,14 +689,13 @@ document.addEventListener("click", function (el) {
 	}
 	
 }, true);
-	
+
 
 const observer = new MutationObserver(() => {
 	if (window.location.pathname.startsWith("/orders")) {
-		let orderElement = document.querySelector('.display-large-700')
+		let orderElement = document.querySelector('.display-medium-700');
 		if (orderElement){
 			let order = orderElement.parentElement.parentElement
-			
 			if (!order.classList.contains('orderCard')){
 				order.parentElement.classList.add('orderContent')
 				order.classList.add('orderCard');
@@ -717,32 +717,25 @@ const observer = new MutationObserver(() => {
 				}
 			}
 			
-			let tableRow = document.querySelectorAll('.ant-table-row')
-			for (let el of tableRow) {
-				if (!el.classList.contains('code')){
-					el.classList.add('code')
-				}
-				
-			  let count = el.children[2];
-			  if (parseInt(count.textContent) > 1){
-			  	el.classList.add('counted')
-			  }
-			}
+			document.querySelector('.ant-drawer-body').querySelectorAll('.ant-table-cell')
+			    .forEach(cell => {
+			        const element = [...cell.querySelectorAll('div')]
+			            .find(el => el.textContent.trim().match(/Выделено\s+\d+\s+из\s+\d+/));
+			
+			        if (!element) return;
+			
+			        const match = element.textContent.trim().match(
+			            /Выделено\s+(\d+)\s+из\s+(\d+)/
+			        );
+			
+			        const selected = Number(match[1]);
+			        const total = Number(match[2]);
+			
+			        if (selected > 1 && total > 1) {
+			            element.classList.add('counted');
+			        }
+			    });
 		}
-		
-    const activeSegment = document.querySelector('.ant-segmented-item-label[aria-selected="true"]');
-    if (activeSegment && activeSegment.title === "Все") {
-        document.querySelectorAll("tr.ant-table-row").forEach(row => {
-            const cells = row.querySelectorAll("td.ant-table-cell");
-            if (cells.length >= 5) {
-                const col4 = cells[3].textContent.trim();
-                const col5 = cells[4].textContent.trim();
-                if (col4 === "-" && col5.includes("Отменен")) {
-                    row.style.display = "none";
-                }
-            }
-        });
-    }
 	}
 })
 
