@@ -664,7 +664,7 @@
 
 
 document.addEventListener("click", function (el) {
-	let order = new URLSearchParams(window.location.search).get('order_id');
+	let order = document.querySelector('.display-medium-700').innerText;
 	let data = [...document.querySelectorAll('.body-small-400._label_1kikn_10')];
 	let get = t => data.find(e => e.textContent.trim() === t)?.nextElementSibling?.innerText;
 	let delivery = get('Тип доставки');

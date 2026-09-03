@@ -877,5 +877,5 @@ function formatFutureDate(input) {
 	const mm = String(targetDate.getMonth() + 1).padStart(2, '0');
 	const yyyy = targetDate.getFullYear();
 
-	return `${dd}.${mm}.${yyyy} ${timeRange}`;dsdd
+	return `${dd}.${mm}.${yyyy} ${timeRange}`;
 }
