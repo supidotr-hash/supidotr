@@ -672,6 +672,7 @@ document.addEventListener("click", function (el) {
 	
 	if (el.target.matches('.btnOrderButton')) navigator.clipboard.writeText(order);
 	
+	if (el.target.matches('.btnSKU')) navigator.clipboard.writeText(order);
 	
 	if (el.target.matches('.btn1CButton')) {
 		if (delivery.includes('С магазина')) text = `Самовывоз / Код: ${get('Код выдачи')}`;
@@ -699,6 +700,15 @@ const observer = new MutationObserver(() => {
 			if (!order.classList.contains('orderCard')){
 				order.parentElement.classList.add('orderContent')
 				order.classList.add('orderCard');
+				
+				let productsCard = document.querySelector('[class*="_productsCard_"]')
+				
+				if (productsCard && order) {
+				    if (order.nextElementSibling !== productsCard) {
+				        order.after(productsCard);
+				    }
+				}
+				
 				let btnContent = document.createElement('div');
 				btnContent.classList.add('btnContent');
 				order.after(btnContent);
@@ -721,9 +731,20 @@ const observer = new MutationObserver(() => {
 			    .forEach(cell => {
 			        const element = [...cell.querySelectorAll('div')]
 			            .find(el => el.textContent.trim().match(/Выделено\s+\d+\s+из\s+\d+/));
-			
+
 			        if (!element) return;
-			
+			       
+			        let btnSKU = element.closest('tr')?.cells[0];
+			        
+			        if (!btnSKU.querySelector('.btnSKU')) {
+			        	let skuValue = btnSKU.innerText.trim();
+			        	btnSKU.textContent = ''
+			        	let divSKU = document.createElement('div');
+							  divSKU.className = 'btnBlock btnSKU';
+							  divSKU.textContent = skuValue;
+			        	btnSKU.appendChild(divSKU);
+							}
+			        
 			        const match = element.textContent.trim().match(
 			            /Выделено\s+(\d+)\s+из\s+(\d+)/
 			        );

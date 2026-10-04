@@ -53,8 +53,115 @@ label.product-avail-modal__filter {
     cursor: pointer;
 }
 
-/* 2 */
-p.btnBlock {
+/* O!Market */
+.actionBtn {
+    margin: 0px;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 15px;
+    background: rgb(239, 239, 239);
+}
+
+.actionBtn:hover {
+    box-shadow: 0px 2px 3px -1px #000000b3;
+    background: rgb(240, 4, 127);
+}
+
+.customSelect {
+    position: relative;
+    display: block;
+    width: 200px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    user-select: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.customSelectTrigger {
+		margin: 0;
+    padding: 3px 12px 3px 15px;
+    border-radius: 20px;
+    background: rgb(239, 239, 239);
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 15px;
+    padding: 5px 15px;
+    box-sizing: border-box;
+}
+
+.customSelectTrigger:hover,
+.customSelect.open .customSelectTrigger {
+    box-shadow: 0px 2px 3px -1px #000000b3;
+    background: rgb(240, 4, 127);
+}
+
+.customSelectArrow {
+    font-size: 10px;
+    transition: transform 0.2s ease;
+}
+
+.customSelect.open .customSelectArrow {
+    transform: rotate(180deg);
+}
+
+.customSelectOptions {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    background: rgb(245, 245, 245);
+    border-radius: 14px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    display: none;
+    z-index: 1000;
+    font-size: 15px;
+}
+
+.customSelect.open .customSelectOptions {
+    display: block;
+}
+
+.customOption {
+    padding: 6px 15px;
+    cursor: pointer;
+    transition: 0.2s;
+    white-space: nowrap;
+    color: #333;
+}
+
+.customOption:hover {
+    background: rgb(240, 4, 127);
+    color: #000;
+}
+
+.customOption.customSelected {
+    font-weight: 600;
+    background: rgb(248 130 191);
+    width: stretch;
+}
+
+.multipleQuantity {
+    background-color: #f882bf;
+    padding-inline: 10px;
+    border-radius: 15px;
+}
+
+.orderProductList {
+    overflow: initial;
+}
+
+/* MMarket */
+.btnBlock {
   background: #eef0f4;
   border-radius: 9px;
   padding: 12px 17px;
@@ -62,6 +169,7 @@ p.btnBlock {
   color: #58595b;
   cursor: pointer;
   font-weight: 500;
+  user-select: none;
 }
 
 .btnContent {
@@ -77,7 +185,7 @@ p.btnBlock {
   font-size: 20px;
 }
 
-p.btnBlock:hover {
+.btnBlock:hover {
     background: #1e9353;
     transition: 0.2s;
     color: white;
@@ -94,54 +202,6 @@ tr td.ant-table-cell:nth-child(1) {
     color: #939393;
 }
 
-/* 3 */
-p.branchBtn, p.copyTo1CBtn, .orderNumberBtn, .sc-kTbCBX.jSzaCP, .phoneNumberButton, .productTitle {
-    margin: 0px;
-    padding: 3px 15px;
-    border-radius: 20px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-p.branchBtn:hover, .sc-kTbCBX.jSzaCP:hover, p.copyTo1CBtn:hover, .orderNumberBtn:hover, .phoneNumberButton:hover, .productTitle:hover {
-	box-shadow: 0px 2px 3px -1px #000000b3;
-	background: rgb(99 204 255);
-}
-
-p.branchBtn, .sc-kTbCBX.jSzaCP, p.copyTo1CBtn, .orderNumberBtn, .phoneNumberButton, .productTitle {
-	background: rgb(239 239 239);
-}
-
-.productTitle {
-	margin-block: 6px;
-}
-
-.multipleQuantity {
-	background: rgb(255 0 0);
-}
-
-.branchWrapper {
-    margin-bottom: 10px;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.searchOrder input[type="text"] {
-    display: inline-block;
-    cursor: default;
-    border: 1px solid rgb(74, 74, 74);
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 19px;
-    border-radius: 8px;
-    color: rgb(74, 74, 74);
-    padding: 9px 16px;
-    background: rgb(255, 255, 255);
-    white-space: nowrap;
-}
-
-.searchOrder input:focus {
-  outline: none;
+.ant-flex-justify-flex-end {
+    justify-content: flex-start;
 }
