@@ -82,7 +82,7 @@ label.product-avail-modal__filter {
 }
 
 .customSelectTrigger {
-		margin: 0;
+    margin: 0;
     padding: 3px 12px 3px 15px;
     border-radius: 20px;
     background: rgb(239, 239, 239);
@@ -158,6 +158,113 @@ label.product-avail-modal__filter {
 
 .orderProductList {
     overflow: initial;
+}
+
+.branchAllocationContainer {
+    margin-top: 8px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.branchRowsList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.branchRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    flex-wrap: nowrap;
+}
+
+.branchRow .customSelect {
+    margin: 0;
+}
+
+.qtyWrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+}
+
+.branchQtyInput {
+    width: 50px;
+    height: 31px;
+    padding: 0;
+    border: none;
+    border-radius: 20px;
+    background: rgb(239, 239, 239);
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #000;
+    outline: none;
+    transition: 0.3s;
+    box-sizing: border-box;
+}
+
+.branchQtyInput:hover,
+.branchQtyInput:focus {
+    box-shadow: 0px 2px 3px -1px #000000b3;
+    background: rgb(240, 4, 127);
+    color: #000;
+}
+
+.qtyLabel {
+    user-select: none;
+}
+
+.removeBranchBtn {
+    border: none;
+    margin: 0;
+    width: 31px;
+    height: 31px;
+    border-radius: 50%;
+    background: rgb(239, 239, 239);
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: 0.3s;
+    box-sizing: border-box;
+}
+
+.removeBranchBtn:hover {
+    box-shadow: 0px 2px 3px -1px #000000b3;
+    background: #ff4d4f;
+    color: #fff;
+}
+
+.addBranchBtn {
+    align-self: flex-start;
+    margin-top: 4px;
+    padding: 5px 15px;
+    border: none;
+    border-radius: 20px;
+    background: rgb(239, 239, 239);
+    color: #333;
+    font-weight: 500;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.addBranchBtn:hover {
+    box-shadow: 0px 2px 3px -1px #000000b3;
+    background: rgb(240, 4, 127);
+    color: #000;
 }
 
 /* MMarket */
