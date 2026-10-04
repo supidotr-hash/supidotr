@@ -14,7 +14,6 @@
 	}
 
 	.cart-page__product-accessories,
-	.cart-page__btn-create-order,
 	.cart-page__product-count-btn {
 		display: none;
 	}
@@ -51,6 +50,10 @@ span.ui-checkbox__title {
 
 label.product-avail-modal__filter {
     cursor: pointer;
+}
+
+.cart-page__btn-create-order.orange-button {
+    margin-top: 15px;
 }
 
 /* O!Market */
