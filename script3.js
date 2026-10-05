@@ -664,6 +664,11 @@
 
 
 document.addEventListener("click", function (el) {
+	if (el.target.matches('.btnSKU')) {
+		navigator.clipboard.writeText(el.target.innerText);
+		return;
+	}
+	
 	let order = document.querySelector('.display-medium-700').innerText;
 	let data = [...document.querySelectorAll('.body-small-400._label_1kikn_10')];
 	let get = t => data.find(e => e.textContent.trim() === t)?.nextElementSibling?.innerText;
@@ -671,9 +676,6 @@ document.addEventListener("click", function (el) {
 	let text;
 	
 	if (el.target.matches('.btnOrderButton')) navigator.clipboard.writeText(order);
-	
-	if (el.target.matches('.btnSKU')) navigator.clipboard.writeText(el.target.innerText);
-	
 	if (el.target.matches('.btn1CButton')) {
 		if (delivery.includes('С магазина')) text = `Самовывоз / Код: ${get('Код выдачи')}`;
 		else if (delivery.includes('ПВЗ')) text = `ПВЗ / ${get('Код для маркировки')}`;
