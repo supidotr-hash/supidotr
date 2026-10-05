@@ -672,7 +672,7 @@ document.addEventListener("click", function (el) {
 	
 	if (el.target.matches('.btnOrderButton')) navigator.clipboard.writeText(order);
 	
-	if (el.target.matches('.btnSKU')) navigator.clipboard.writeText(order);
+	if (el.target.matches('.btnSKU')) navigator.clipboard.writeText(el.target.innerText);
 	
 	if (el.target.matches('.btn1CButton')) {
 		if (delivery.includes('С магазина')) text = `Самовывоз / Код: ${get('Код выдачи')}`;
