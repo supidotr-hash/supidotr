@@ -7,7 +7,6 @@ const branch = {
 	wu: ['Аламедин-1', '+996703556612', 'ул. Ауэзова, 3а', 'Пн-Вс: 10:00–21:00']
 };
 
-// Функция для фильтрации цен и системных элементов
 function isPriceOrStatus(el) {
 	if (!el) return true;
 	const text = el.innerText.trim();
@@ -17,7 +16,6 @@ function isPriceOrStatus(el) {
 	return false;
 }
 
-// Генерация HTML кастомного селекта
 function createCustomSelectHTML(selectedKey) {
 	const branchKeys = Object.keys(branch);
 	return `
@@ -37,7 +35,6 @@ function createCustomSelectHTML(selectedKey) {
 	`;
 }
 
-// Создание элемента строки филиала
 function createBranchRowElement(selectedKey, maxQuantity, initialQty) {
 	const row = document.createElement('div');
 	row.classList.add('branchRow');
@@ -57,7 +54,6 @@ function createBranchRowElement(selectedKey, maxQuantity, initialQty) {
 	return row;
 }
 
-// Создание контейнера филиалов для товара
 function createBranchAllocationContainer(maxQuantity) {
 	const branchKeys = Object.keys(branch);
 	const defaultKey = branchKeys[0];
@@ -85,7 +81,6 @@ function createBranchAllocationContainer(maxQuantity) {
 	return container;
 }
 
-// Обновление состояния контейнера (проверка лимита количества и видимости кнопок)
 function updateContainerState(container) {
 	const maxQty = parseInt(container.dataset.maxQty) || 1;
 	const rows = Array.from(container.querySelectorAll('.branchRow'));
@@ -163,7 +158,7 @@ function generateClientText(orderNumber, items, isPickup = false) {
 		text += `📍 Филиал: **${branchName}**\n\n`;
 		text += `📦 Состав:\n`;
 		groups[key].forEach((prod, i) => {
-			text += `${i + 1}. **${prod.name}** —${prod.quantity} шт.\n`;
+			text += `${i + 1}. **${prod.name}** — ${prod.quantity} шт.\n`;
 		});
 
 		text += `\n🏢 Адрес: **${branchAddress}**\n`;
@@ -238,6 +233,15 @@ const observer = new MutationObserver(() => {
 		}
 
 		if (productListBlock) {
+			const allProdParagraphs = productListBlock.querySelectorAll('p');
+			allProdParagraphs.forEach(p => {
+				if (p.innerText.includes('ID товара продавца:') && !p.classList.contains('productIdBtn')) {
+					const idValue = p.innerText.replace('ID товара продавца:', '').trim();
+					p.textContent = idValue;
+					p.classList.add('productIdBtn', 'actionBtn');
+				}
+			});
+
 			const firstP = productListBlock.querySelector('p');
 			if (!firstP) return;
 
@@ -253,31 +257,43 @@ const observer = new MutationObserver(() => {
 
 				if (!pElem.classList.contains('productTitle')) {
 					pElem.classList.add('productTitle', 'actionBtn');
-					pElem.style.marginBottom = '10px';
 				}
 
-				let infoContainer = pElem.nextElementSibling;
-				while (infoContainer && isPriceOrStatus(infoContainer)) {
-					if (infoContainer.innerText.includes('Заказ')) break;
-					infoContainer = infoContainer.nextElementSibling;
+				// Надежный поиск блока с количеством («Заказ») среди дочерних элементов товара
+				let quantityParagraph = null;
+				let targetBlock = null;
+				let siblingCheck = pElem.nextElementSibling;
+				while (siblingCheck && !siblingCheck.classList?.contains('productTitle')) {
+					const found = Array.from(siblingCheck.querySelectorAll?.('p') || [])
+						.concat(siblingCheck.tagName === 'P' ? [siblingCheck] : [])
+						.find(el => el.innerText.includes('Заказ'));
+					if (found) {
+						quantityParagraph = found;
+						targetBlock = siblingCheck;
+						break;
+					}
+					siblingCheck = siblingCheck.nextElementSibling;
 				}
 
-				if (!infoContainer) infoContainer = pElem;
+				if (!targetBlock) targetBlock = pElem;
 
 				let maxQuantity = 1;
-				const quantityParagraph = Array.from(infoContainer.querySelectorAll('p'))
-					.concat(infoContainer.tagName === 'P' ? [infoContainer] : [])
-					.find((el) => el.innerText.includes('Заказ'));
-
 				if (quantityParagraph) {
 					const quantity = parseInt(quantityParagraph.innerText.replace(/\D/g, '')) || 0;
 					if (quantity > 0) maxQuantity = quantity;
-					if (quantity > 1) {
-						quantityParagraph.parentElement.classList.add('multipleQuantity');
+					
+					const parentWrapper = quantityParagraph.parentElement;
+					if (parentWrapper) {
+						parentWrapper.classList.remove('multipleQuantity', 'highQuantity');
+						if (quantity > 2) {
+							parentWrapper.classList.add('highQuantity'); // Красная подсветка если больше 2 шт.
+						} else if (quantity > 1) {
+							parentWrapper.classList.add('multipleQuantity'); // Розовая подсветка для 2 шт.
+						}
 					}
 				}
 				
-				let sibling = infoContainer.nextElementSibling;
+				let sibling = targetBlock.nextElementSibling;
 				let hasContainer = false;
 				while (sibling) {
 					if (sibling.classList?.contains('branchAllocationContainer')) {
@@ -290,7 +306,7 @@ const observer = new MutationObserver(() => {
 
 				if (!hasContainer) {
 					const container = createBranchAllocationContainer(maxQuantity);
-					infoContainer.after(container);
+					targetBlock.after(container);
 				}
 			});
 		}
@@ -334,6 +350,15 @@ document.addEventListener('input', (event) => {
 });
 
 document.addEventListener('click', (event) => {
+	const productIdBtn = event.target.closest('.productIdBtn');
+	if (productIdBtn) {
+		const idDigits = productIdBtn.innerText.replace(/\D/g, '');
+		if (idDigits) {
+			navigator.clipboard.writeText(idDigits);
+		}
+		return;
+	}
+
 	if (event.target.closest('.addBranchBtn')) {
 		const addBtn = event.target.closest('.addBranchBtn');
 		const container = addBtn.closest('.branchAllocationContainer');
@@ -515,7 +540,7 @@ function formatFutureDate(input) {
 	let targetDate;
 
 	if (dateText === "сегодня") {
-		targetDate = now;
+		targetDate = new Date();
 	} else if (dateText === "завтра") {
 		targetDate = new Date(now);
 		targetDate.setDate(now.getDate() + 1);

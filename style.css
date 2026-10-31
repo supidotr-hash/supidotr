@@ -73,12 +73,26 @@ label.product-avail-modal__filter {
     background: rgb(240, 4, 127);
 }
 
+.productTitle {
+    margin-bottom: 6px !important;
+}
+
+.productIdBtn {
+    display: inline-block;
+    width: fit-content;
+    margin-top: 2px;
+    margin-bottom: 6px;
+    padding: 4px 17px;
+    color: black;
+    font-size: 15px;
+}
+
 .customSelect {
     position: relative;
     display: block;
     width: 200px;
-    margin-top: 8px;
-    margin-bottom: 8px;
+    margin-top: 6px;
+    margin-bottom: 6px;
     user-select: none;
     font-size: 14px;
     font-weight: 500;
@@ -154,7 +168,14 @@ label.product-avail-modal__filter {
 }
 
 .multipleQuantity {
-    background-color: #f882bf;
+    background-color: #f0047f;
+    padding-inline: 10px;
+    border-radius: 15px;
+}
+
+.highQuantity {
+    background-color: #ff4d4f !important;
+    color: #fff !important;
     padding-inline: 10px;
     border-radius: 15px;
 }
@@ -164,17 +185,17 @@ label.product-avail-modal__filter {
 }
 
 .branchAllocationContainer {
-    margin-top: 8px;
-    margin-bottom: 12px;
+    margin-top: 6px;
+    margin-bottom: 10px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
 .branchRowsList {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
 .branchRow {
@@ -252,8 +273,8 @@ label.product-avail-modal__filter {
 
 .addBranchBtn {
     align-self: flex-start;
-    margin-top: 4px;
-    padding: 5px 15px;
+    margin-top: 2px;
+    padding: 4px 12px;
     border: none;
     border-radius: 20px;
     background: rgb(239, 239, 239);
