@@ -291,6 +291,22 @@ label.product-avail-modal__filter {
     color: #000;
 }
 
+.orderTimer {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: #ff4d4f;
+    color: #fff;
+    font-weight: 600;
+    font-size: 13px;
+    margin-left: 8px;
+}
+
+.orderTimer.pickupTimer {
+    background: rgb(240, 4, 127);
+}
+
 /* MMarket */
 .btnBlock {
   background: #eef0f4;

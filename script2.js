@@ -569,3 +569,100 @@ function formatFutureDate(input) {
 
 	return `${dd}.${mm}.${yyyy} ${timeRange}`;
 }
+
+function parseOrderDateFromCard(orderCard) {
+	const pElements = orderCard.querySelectorAll('p');
+	for (const p of pElements) {
+		const text = p.textContent.trim();
+		if (text.startsWith('Дата заказа:')) {
+			const clean = text.replace('Дата заказа:', '').trim();
+			if (clean.includes('|')) {
+				const [datePart, timePart] = clean.split('|').map(s => s.trim());
+				const [day, month, year] = datePart.split('.');
+				return new Date(`${year}-${month}-${day}T${timePart}:00`);
+			} else if (clean.includes('-')) {
+				return new Date(clean.replace(' ', 'T'));
+			}
+		}
+	}
+	return new Date();
+}
+
+function formatTimeRemaining(totalSeconds) {
+	if (totalSeconds <= 0) return null;
+
+	if (totalSeconds > 86400) {
+		const days = Math.floor(totalSeconds / 86400);
+		const hours = Math.floor((totalSeconds % 86400) / 3600);
+		const minutes = Math.floor((totalSeconds % 3600) / 60);
+		return `${days}д ${hours}ч ${minutes}м`;
+	}
+
+	const hours = Math.floor(totalSeconds / 3600);
+	const minutes = Math.floor((totalSeconds % 3600) / 60);
+	const seconds = totalSeconds % 60;
+
+	const pad = (n) => String(n).padStart(2, '0');
+	if (hours > 0) {
+		return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+	}
+	return `${pad(minutes)}:${pad(seconds)}`;
+}
+
+function initOrderTimers() {
+	const orderCards = document.querySelectorAll('.orderCard');
+	orderCards.forEach(card => {
+		const statusEl = card.querySelector('.sc-jztukc');
+		const deliveryEl = card.querySelector('.deliveryInfo');
+		const headerRow = card.querySelector('.sc-cWSHoV.sc-eBMEME.jqZSy.bMzPyk') || card.firstElementChild;
+
+		if (!headerRow) return;
+
+		const statusText = statusEl ? statusEl.textContent.trim() : '';
+		const deliveryText = deliveryEl ? deliveryEl.textContent.trim() : '';
+
+		const isUnprocessed = statusText.includes('Не обработан');
+		const isPickup = deliveryText.includes('Самовывоз');
+
+		let timerEl = card.querySelector('.orderTimer');
+
+		if (!isUnprocessed && !isPickup) {
+			if (timerEl) timerEl.remove();
+			return;
+		}
+
+		const orderDate = parseOrderDateFromCard(card);
+		const now = new Date();
+		const elapsedSeconds = Math.floor((now - orderDate) / 1000);
+
+		let totalDuration = 0;
+		let isPickupTimer = false;
+
+		if (isUnprocessed) {
+			totalDuration = 3600;
+		} else if (isPickup) {
+			totalDuration = 7 * 24 * 3600;
+			isPickupTimer = true;
+		}
+
+		const remaining = totalDuration - elapsedSeconds;
+
+		if (remaining <= 0) {
+			if (timerEl) timerEl.remove();
+			return;
+		}
+
+		if (!timerEl) {
+			timerEl = document.createElement('div');
+			timerEl.classList.add('orderTimer');
+			if (isPickupTimer) {
+				timerEl.classList.add('pickupTimer');
+			}
+			headerRow.appendChild(timerEl);
+		}
+
+		timerEl.textContent = `${formatTimeRemaining(remaining)}`;
+	});
+}
+
+setInterval(initOrderTimers, 1000);
