@@ -58,8 +58,40 @@ function createBranchRowElement(selectedKey, maxQuantity, initialQty) {
 	return row;
 }
 
-// Создание контейнера филиалов для товара
-function createBranchAllocationContainer(maxQuantity) {
+// Получение уникального идентификатора товара в заказе для сохранения
+function getContainerIdentifier(container) {
+	const orderCard = container.closest('.orderCard') || container.closest('.orderProductList')?.previousElementSibling;
+	if (!orderCard) return null;
+	const orderNumEl = orderCard.querySelector('.orderNumberBtn') || orderCard.querySelector('p');
+	const orderNumber = orderNumEl ? orderNumEl.textContent.replace(/\D/g, '') : 'unknown';
+
+	const productList = orderCard.nextElementSibling;
+	if (!productList) return { orderNumber, productIndex: 0 };
+	const containers = Array.from(productList.querySelectorAll('.branchAllocationContainer'));
+	const productIndex = containers.indexOf(container);
+	return { orderNumber, productIndex: productIndex >= 0 ? productIndex : 0 };
+}
+
+// Сохранение состояния распределения филиалов в localStorage
+function saveContainerState(container) {
+	const idInfo = getContainerIdentifier(container);
+	if (!idInfo) return;
+	const { orderNumber, productIndex } = idInfo;
+
+	const rows = Array.from(container.querySelectorAll('.branchRow'));
+	const rowsData = rows.map(row => {
+		const selectEl = row.querySelector('.customSelect');
+		const branchKey = selectEl ? selectEl.dataset.value : Object.keys(branch)[0];
+		const qtyInput = row.querySelector('.branchQtyInput');
+		const quantity = qtyInput ? (parseInt(qtyInput.value) || 1) : parseInt(container.dataset.maxQty) || 1;
+		return { branchKey, quantity };
+	});
+
+	localStorage.setItem(`omarket_alloc_${orderNumber}_p_${productIndex}`, JSON.stringify(rowsData));
+}
+
+// Создание контейнера филиалов с восстановлением сохраненных данных
+function createBranchAllocationContainer(maxQuantity, orderNumber, productIndex) {
 	const branchKeys = Object.keys(branch);
 	const defaultKey = branchKeys[0];
 
@@ -70,8 +102,28 @@ function createBranchAllocationContainer(maxQuantity) {
 	const rowsList = document.createElement('div');
 	rowsList.classList.add('branchRowsList');
 
-	const initialRow = createBranchRowElement(defaultKey, maxQuantity, maxQuantity);
-	rowsList.appendChild(initialRow);
+	let savedRows = null;
+	if (orderNumber !== undefined && productIndex !== undefined) {
+		const saved = localStorage.getItem(`omarket_alloc_${orderNumber}_p_${productIndex}`);
+		if (saved) {
+			try {
+				savedRows = JSON.parse(saved);
+			} catch (e) {
+				savedRows = null;
+			}
+		}
+	}
+
+	if (savedRows && Array.isArray(savedRows) && savedRows.length > 0) {
+		savedRows.forEach(rowInfo => {
+			const row = createBranchRowElement(rowInfo.branchKey || defaultKey, maxQuantity, rowInfo.quantity || 1);
+			rowsList.appendChild(row);
+		});
+	} else {
+		const initialRow = createBranchRowElement(defaultKey, maxQuantity, maxQuantity);
+		rowsList.appendChild(initialRow);
+	}
+
 	container.appendChild(rowsList);
 
 	if (maxQuantity > 1) {
@@ -239,7 +291,6 @@ const observer = new MutationObserver(() => {
 		}
 
 		if (productListBlock) {
-			// Очищаем текст от "ID товара продавца:" и оформляем как кнопку
 			const allProdParagraphs = productListBlock.querySelectorAll('p');
 			allProdParagraphs.forEach(p => {
 				if (p.innerText.includes('ID товара продавца:') && !p.classList.contains('productIdBtn')) {
@@ -259,14 +310,22 @@ const observer = new MutationObserver(() => {
 				productTitleClasses.map((cls) => '.' + cls).join('')
 			);
 
+			const orderNumEl = orderCardElement.querySelector('.orderNumberBtn');
+			const orderNumber = orderNumEl ? orderNumEl.textContent.replace(/\D/g, '') : '';
+
 			candidateParagraphs.forEach((pElem) => {
 				if (isPriceOrStatus(pElem)) return;
 
 				if (!pElem.classList.contains('productTitle')) {
 					pElem.classList.add('productTitle', 'actionBtn');
 				}
+			});
 
-				// Надежный поиск блока с количеством («Заказ») среди дочерних элементов товара
+			const productTitles = Array.from(productListBlock.querySelectorAll('.productTitle'));
+
+			candidateParagraphs.forEach((pElem) => {
+				if (isPriceOrStatus(pElem)) return;
+
 				let quantityParagraph = null;
 				let targetBlock = null;
 				let siblingCheck = pElem.nextElementSibling;
@@ -293,9 +352,9 @@ const observer = new MutationObserver(() => {
 					if (parentWrapper) {
 						parentWrapper.classList.remove('multipleQuantity', 'highQuantity');
 						if (quantity > 2) {
-							parentWrapper.classList.add('highQuantity'); // Красная подсветка если больше 2 шт.
+							parentWrapper.classList.add('highQuantity');
 						} else if (quantity > 1) {
-							parentWrapper.classList.add('multipleQuantity'); // Розовая подсветка для 2 шт.
+							parentWrapper.classList.add('multipleQuantity');
 						}
 					}
 				}
@@ -307,12 +366,13 @@ const observer = new MutationObserver(() => {
 						hasContainer = true;
 						break;
 					}
-					if (sibling.classList?.contains('productTitle')) break;
+					if (sibling.classList.contains('productTitle')) break;
 					sibling = sibling.nextElementSibling;
 				}
 
 				if (!hasContainer) {
-					const container = createBranchAllocationContainer(maxQuantity);
+					const productIndex = productTitles.indexOf(pElem);
+					const container = createBranchAllocationContainer(maxQuantity, orderNumber, productIndex >= 0 ? productIndex : 0);
 					targetBlock.after(container);
 				}
 			});
@@ -353,11 +413,11 @@ document.addEventListener('input', (event) => {
 
 		input.value = val;
 		updateContainerState(container);
+		saveContainerState(container);
 	}
 });
 
 document.addEventListener('click', (event) => {
-	// Копирование ID товара по клику
 	const productIdBtn = event.target.closest('.productIdBtn');
 	if (productIdBtn) {
 		const idDigits = productIdBtn.innerText.replace(/\D/g, '');
@@ -403,6 +463,7 @@ document.addEventListener('click', (event) => {
 			const newRow = createBranchRowElement(unusedKey, maxQty, remaining);
 			rowsList.appendChild(newRow);
 			updateContainerState(container);
+			saveContainerState(container);
 		}
 		return;
 	}
@@ -415,6 +476,7 @@ document.addEventListener('click', (event) => {
 
 		row.remove();
 		updateContainerState(container);
+		saveContainerState(container);
 		return;
 	}
 
@@ -441,6 +503,11 @@ document.addEventListener('click', (event) => {
 		option.classList.add('customSelected');
 
 		select.classList.remove('open');
+
+		const container = select.closest('.branchAllocationContainer');
+		if (container) {
+			saveContainerState(container);
+		}
 		return;
 	}
 
@@ -658,7 +725,7 @@ function initOrderTimers() {
 			if (isPickupTimer) {
 				timerEl.classList.add('pickupTimer');
 			}
-			headerRow.appendChild(timerEl);
+			headerRow.appendChild(timerId = timerEl);
 		}
 
 		timerEl.textContent = `${formatTimeRemaining(remaining)}`;
