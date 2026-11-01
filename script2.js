@@ -1,3 +1,4 @@
+// O!Market
 const branch = {
 	tp: ['Технопоинт', '+996703556615', 'улица Курманжан Датка, 755', 'Пн-Вс: 10:00–21:00'],
 	ww: ['Метрополь', '+996703556607', 'ул. Фрунзе, 340 (2 этаж)', 'Пн-Вс: 10:00–21:00'],
@@ -7,6 +8,7 @@ const branch = {
 	wu: ['Аламедин-1', '+996703556612', 'ул. Ауэзова, 3а', 'Пн-Вс: 10:00–21:00']
 };
 
+// Функция для фильтрации цен и системных элементов
 function isPriceOrStatus(el) {
 	if (!el) return true;
 	const text = el.innerText.trim();
@@ -16,6 +18,7 @@ function isPriceOrStatus(el) {
 	return false;
 }
 
+// Генерация HTML кастомного селекта
 function createCustomSelectHTML(selectedKey) {
 	const branchKeys = Object.keys(branch);
 	return `
@@ -35,6 +38,7 @@ function createCustomSelectHTML(selectedKey) {
 	`;
 }
 
+// Создание элемента строки филиала
 function createBranchRowElement(selectedKey, maxQuantity, initialQty) {
 	const row = document.createElement('div');
 	row.classList.add('branchRow');
@@ -54,6 +58,7 @@ function createBranchRowElement(selectedKey, maxQuantity, initialQty) {
 	return row;
 }
 
+// Создание контейнера филиалов для товара
 function createBranchAllocationContainer(maxQuantity) {
 	const branchKeys = Object.keys(branch);
 	const defaultKey = branchKeys[0];
@@ -81,6 +86,7 @@ function createBranchAllocationContainer(maxQuantity) {
 	return container;
 }
 
+// Обновление состояния контейнера (проверка лимита количества и видимости кнопок)
 function updateContainerState(container) {
 	const maxQty = parseInt(container.dataset.maxQty) || 1;
 	const rows = Array.from(container.querySelectorAll('.branchRow'));
@@ -233,6 +239,7 @@ const observer = new MutationObserver(() => {
 		}
 
 		if (productListBlock) {
+			// Очищаем текст от "ID товара продавца:" и оформляем как кнопку
 			const allProdParagraphs = productListBlock.querySelectorAll('p');
 			allProdParagraphs.forEach(p => {
 				if (p.innerText.includes('ID товара продавца:') && !p.classList.contains('productIdBtn')) {
@@ -350,6 +357,7 @@ document.addEventListener('input', (event) => {
 });
 
 document.addEventListener('click', (event) => {
+	// Копирование ID товара по клику
 	const productIdBtn = event.target.closest('.productIdBtn');
 	if (productIdBtn) {
 		const idDigits = productIdBtn.innerText.replace(/\D/g, '');
