@@ -336,3 +336,31 @@ tr td.ant-table-cell:nth-child(1) {
 .ant-flex-justify-flex-end {
     justify-content: flex-start;
 }
+
+/* Bakai */
+._499TxW_qty._custom-qty-highlight {
+    color: #e53935 !important;
+    font-weight: 700 !important;
+}
+
+._499TxW_item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+._499TxW_qty,
+.custom-item-copy-btn {
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+}
+
+._499TxW_itemText {
+    flex: 1 !important;
+    min-width: 0 !important;
+}
+
+._499TxW_price {
+    flex-shrink: 0 !important;
+    margin-left: auto !important;
+}
