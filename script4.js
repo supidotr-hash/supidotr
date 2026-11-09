@@ -79,7 +79,7 @@
                 `;
                 copyOrderBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const formattedText = `НЕ СОБРАН / Заказ ${orderNum} / ${deliveryText} / БакайСтор`;
+                    const formattedText = `НЕ СОБРАН / НЕ ПРОМАРКИРОВАНО / Заказ ${orderNum} / ${deliveryText} / БакайСтор`;
                     navigator.clipboard.writeText(formattedText);
                 });
 

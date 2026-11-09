@@ -681,7 +681,7 @@ document.addEventListener("click", function (el) {
 		else if (delivery.includes('ПВЗ')) text = `ПВЗ / ${get('Код для маркировки')}`;
 	  else text = `${get('Тип доставки')} / ${get('Доставить')}`;
 	  
-	  navigator.clipboard.writeText(`НЕ СОБРАН / Заказ №${order} / ${text} / ММаркет`);
+	  navigator.clipboard.writeText(`НЕ СОБРАН / НЕ ПРОМАРКИРОВАНО / Заказ №${order} / ${text} / ММаркет`);
 	}
 	
 	if (el.target.matches('.onePhoneButton')) navigator.clipboard.writeText(get('Номер телефона'));

@@ -577,7 +577,7 @@ document.addEventListener('click', (event) => {
 
 		if (event.target.matches('.copyTo1CBtn') && deliveryInfo && orderNumberBtn) {
 			const formattedDate = formatFutureDate(deliveryInfo.innerText);
-			navigator.clipboard.writeText(`НЕ СОБРАН / ${orderNumberBtn.innerText} / ${formattedDate} / О!Маркет`);
+			navigator.clipboard.writeText(`НЕ СОБРАН / НЕ ПРОМАРКИРОВАНО / ${orderNumberBtn.innerText} / ${formattedDate} / О!Маркет`);
 		}
 		
 		if (event.target.matches('.productTitle')) {
