@@ -670,11 +670,10 @@ document.addEventListener("click", function (el) {
 	}
 	
 	let order = document.querySelector('.display-medium-700').innerText;
-	let data = [...document.querySelectorAll('.body-small-400._label_1kikn_10')];
+	let data = [...document.querySelectorAll('.body-small-400._label_msnel_10')];
 	let get = t => data.find(e => e.textContent.trim() === t)?.nextElementSibling?.innerText;
 	let delivery = get('Тип доставки');
 	let text;
-	
 	if (el.target.matches('.btnOrderButton')) navigator.clipboard.writeText(order);
 	if (el.target.matches('.btn1CButton')) {
 		if (delivery.includes('С магазина')) text = `Самовывоз / Код: ${get('Код выдачи')}`;
