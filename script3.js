@@ -8,6 +8,8 @@ document.addEventListener("click", function (el) {
 		return;
 	}
 
+	// /sss
+
 	const detailRoot = document.querySelector('[data-slot="order-detail"]');
 	if (!detailRoot) return;
 
