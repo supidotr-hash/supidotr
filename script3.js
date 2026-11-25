@@ -7,7 +7,6 @@ document.addEventListener("click", function (el) {
 		navigator.clipboard.writeText(skuBtn.textContent.trim());
 		return;
 	}
-<<<<<<< HEAD
 
 	const detailRoot = document.querySelector('[data-slot="order-detail"]');
 	if (!detailRoot) return;
@@ -28,21 +27,6 @@ document.addEventListener("click", function (el) {
 
 	if (el.target.closest(".btnOrderButton")) {
 		if (order) navigator.clipboard.writeText(order);
-=======
-	
-	let order = document.querySelector('.display-medium-700').innerText;
-	let data = [...document.querySelectorAll('.body-small-400._label_msnel_10')];
-	let get = t => data.find(e => e.textContent.trim() === t)?.nextElementSibling?.innerText;
-	let delivery = get('Тип доставки');
-	let text;
-	if (el.target.matches('.btnOrderButton')) navigator.clipboard.writeText(order);
-	if (el.target.matches('.btn1CButton')) {
-		if (delivery.includes('С магазина')) text = `Самовывоз / Код: ${get('Код выдачи')}`;
-		else if (delivery.includes('ПВЗ')) text = `ПВЗ / ${get('Код для маркировки')}`;
-	  else text = `${get('Тип доставки')} / ${get('Доставить')}`;
-	  
-	  navigator.clipboard.writeText(`НЕ СОБРАН / НЕ ПРОМАРКИРОВАНО / Заказ №${order} / ${text} / ММаркет`);
->>>>>>> 49e942f263e5640bcc3c2f3cdaa245b2ad271514
 	}
 
 	if (el.target.closest(".btn1CButton")) {
