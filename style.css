@@ -308,15 +308,53 @@ label.product-avail-modal__filter {
 }
 
 /* MMarket */
+[data-slot="order-detail"] .btnContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 4px 8px 4px;
+}
+
+[data-slot=order-detail] .btnBlock {
+    background: #161513;
+    border-radius: 5px;
+    padding: 5px 24px;
+    margin: 0;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 13px;
+    user-select: none;
+    transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+[data-slot="order-detail"] .btnBlock:hover {
+  background: #454442;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(30, 147, 83, 0.25);
+}
+
+[data-slot=order-detail] .btnSKU {
+    display: inline-block;
+    margin-top: 2px;
+    padding: 2px 14px;
+    font-size: 13px;
+    border-radius: 5px;
+}
+
+[data-slot="order-detail"] .counted {
+  color: #e53935 !important;
+  font-weight: 700 !important;
+}
+
 .btnBlock {
-  background: #eef0f4;
-  border-radius: 9px;
-  padding: 12px 17px;
-  margin-right: 10px;
-  color: #58595b;
-  cursor: pointer;
-  font-weight: 500;
-  user-select: none;
+    background: #eef0f4;
+    border-radius: 9px;
+    padding: 12px 17px;
+    margin-right: 10px;
+    color: #58595b;
+    cursor: pointer;
+    user-select: none;
 }
 
 .btnContent {
@@ -326,32 +364,33 @@ label.product-avail-modal__filter {
   padding-bottom: 12px;
 }
 
-.counted {
-  color: red;
-  font-weight: bold;
-  font-size: 20px;
+.ant-table-cell .counted {
+  color: #e53935 !important;
+  font-weight: bold !important;
+  font-size: 20px !important;
 }
 
 .btnBlock:hover {
-    background: #1e9353;
-    transition: 0.2s;
-    color: white;
+  background: #454442;
+  transition: 0.2s;
+  color: white;
 }
 
 tr td.ant-table-cell:nth-child(1):hover {
-    transition: 0.2s;
-    color: #2b2b2b;
+  transition: 0.2s;
+  color: #2b2b2b;
 }
 
 tr td.ant-table-cell:nth-child(1) {
-    font-size: 17px;
-    text-align: center;
-    color: #939393;
+  font-size: 17px;
+  text-align: center;
+  color: #939393;
 }
 
 .ant-flex-justify-flex-end {
-    justify-content: flex-start;
+  justify-content: flex-start;
 }
+
 
 /* Bakai */
 ._499TxW_qty._custom-qty-highlight {

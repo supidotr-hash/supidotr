@@ -1,766 +1,147 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 document.addEventListener("click", function (el) {
-	if (el.target.matches('.btnSKU')) {
-		navigator.clipboard.writeText(el.target.innerText);
+	const skuBtn = el.target.closest(".btnSKU");
+	if (skuBtn) {
+		el.preventDefault();
+		el.stopPropagation();
+		el.stopImmediatePropagation();
+		navigator.clipboard.writeText(skuBtn.textContent.trim());
 		return;
 	}
-	
-	let order = document.querySelector('.display-medium-700').innerText;
-	let data = [...document.querySelectorAll('.body-small-400._label_1kikn_10')];
-	let get = t => data.find(e => e.textContent.trim() === t)?.nextElementSibling?.innerText;
-	let delivery = get('Тип доставки');
+
+	const detailRoot = document.querySelector('[data-slot="order-detail"]');
+	if (!detailRoot) return;
+
+	const headingText = detailRoot.querySelector("header h2")?.textContent || "";
+	const order = (headingText.match(/\d+/) || [""])[0];
+
+	const labels = [...detailRoot.querySelectorAll("span")].filter(
+		(s) => s.className.includes("text-muted-foreground")
+	);
+	const get = (t) => {
+		const found = labels.find((e) => e.textContent.trim() === t);
+		return found?.nextElementSibling?.textContent.trim() || "";
+	};
+
+	const delivery = get("Тип доставки");
 	let text;
-	
-	if (el.target.matches('.btnOrderButton')) navigator.clipboard.writeText(order);
-	if (el.target.matches('.btn1CButton')) {
-		if (delivery.includes('С магазина')) text = `Самовывоз / Код: ${get('Код выдачи')}`;
-		else if (delivery.includes('ПВЗ')) text = `ПВЗ / ${get('Код для маркировки')}`;
-	  else text = `${get('Тип доставки')} / ${get('Доставить')}`;
-	  
-	  navigator.clipboard.writeText(`НЕ СОБРАН / НЕ ПРОМАРКИРОВАНО / Заказ №${order} / ${text} / ММаркет`);
+
+	if (el.target.closest(".btnOrderButton")) {
+		if (order) navigator.clipboard.writeText(order);
 	}
-	
-	if (el.target.matches('.onePhoneButton')) navigator.clipboard.writeText(get('Номер телефона'));
-	
-	if (el.target.matches('.code .ant-table-cell:nth-child(1)')){
-		navigator.clipboard.writeText(el.target.textContent);
-		el.stopImmediatePropagation();
+
+	if (el.target.closest(".btn1CButton")) {
+		if (delivery.includes("С магазина")) {
+			text = `Самовывоз / Код: ${get("Код выдачи") || "-"}`;
+		} else if (delivery.includes("ПВЗ")) {
+			text = `ПВЗ / ${get("Код для маркировки") || "-"}`;
+		} else {
+			text = `${delivery} / ${get("Доставить") || get("Когда доставить") || "-"}`;
+		}
+
+		navigator.clipboard.writeText(
+			`НЕ СОБРАН / НЕ ПРОМАРКИРОВАНО / Заказ №${order} / ${text} / ММаркет`
+		);
 	}
-	
+
+	if (el.target.closest(".onePhoneButton")) {
+		const phone = get("Номер телефона");
+		if (phone) navigator.clipboard.writeText(phone);
+	}
 }, true);
 
-
 const observer = new MutationObserver(() => {
-	if (window.location.pathname.startsWith("/orders")) {
-		let orderElement = document.querySelector('.display-medium-700');
-		if (orderElement){
-			let order = orderElement.parentElement.parentElement
-			if (!order.classList.contains('orderCard')){
-				order.parentElement.classList.add('orderContent')
-				order.classList.add('orderCard');
-				
-				let productsCard = document.querySelector('[class*="_productsCard_"]')
-				
-				if (productsCard && order) {
-				    if (order.nextElementSibling !== productsCard) {
-				        order.after(productsCard);
-				    }
-				}
-				
-				let btnContent = document.createElement('div');
-				btnContent.classList.add('btnContent');
-				order.after(btnContent);
-				
-				let btnData = {
-					'btnOrderButton':	'Заказ',
-					'onePhoneButton': 'Телефон',
-					'btn1CButton': '1C'
-				}
-				
+	if (!window.location.pathname.startsWith("/orders")) return;
+
+	const detailRoot = document.querySelector('[data-slot="order-detail"]');
+	const header = detailRoot?.querySelector("header");
+
+	if (detailRoot && header) {
+		const orderContainer = header.parentElement;
+
+		if (orderContainer && !orderContainer.classList.contains("orderCard")) {
+			orderContainer.parentElement?.classList.add("orderContent");
+			orderContainer.classList.add("orderCard");
+
+			const productsList = detailRoot.querySelector("ul");
+			let btnContent = detailRoot.querySelector(".btnContent");
+
+			if (!btnContent) {
+				btnContent = document.createElement("div");
+				btnContent.classList.add("btnContent");
+
+				const btnData = {
+					btnOrderButton: "Заказ",
+					onePhoneButton: "Телефон",
+					btn1CButton: "1C",
+				};
+
 				for (let key in btnData) {
-				  let btn = document.createElement('p');
-				  btn.classList.add('btnBlock', key);
+					const btn = document.createElement("p");
+					btn.classList.add("btnBlock", key);
 					btn.textContent = btnData[key];
 					btnContent.append(btn);
 				}
 			}
-			
-			document.querySelector('.ant-drawer-body').querySelectorAll('.ant-table-cell')
-			    .forEach(cell => {
-			        const element = [...cell.querySelectorAll('div')]
-			            .find(el => el.textContent.trim().match(/Выделено\s+\d+\s+из\s+\d+/));
 
-			        if (!element) return;
-			       
-			        let btnSKU = element.closest('tr')?.cells[0];
-			        
-			        if (!btnSKU.querySelector('.btnSKU')) {
-			        	let skuValue = btnSKU.innerText.trim();
-			        	btnSKU.textContent = ''
-			        	let divSKU = document.createElement('div');
-							  divSKU.className = 'btnBlock btnSKU';
-							  divSKU.textContent = skuValue;
-			        	btnSKU.appendChild(divSKU);
-							}
-			        
-			        const match = element.textContent.trim().match(
-			            /Выделено\s+(\d+)\s+из\s+(\d+)/
-			        );
-			
-			        const selected = Number(match[1]);
-			        const total = Number(match[2]);
-			
-			        if (selected > 1 && total > 1) {
-			            element.classList.add('counted');
-			        }
-			    });
+			header.after(btnContent);
+
+			if (productsList && btnContent.nextElementSibling !== productsList) {
+				btnContent.after(productsList);
+			}
 		}
+
+		detailRoot.querySelectorAll("ul > li").forEach((item) => {
+			const qtyElement = [...item.querySelectorAll("span, div")].find((el) =>
+				/Выделено\s+\d+\s+из\s+\d+/.test(el.textContent.trim())
+			);
+			if (!qtyElement) return;
+
+			const skuLabel = [...item.querySelectorAll("span")].find(
+				(s) => s.textContent.trim() === "SKU"
+			);
+			const skuValueEl = skuLabel?.nextElementSibling;
+
+			if (skuValueEl && !skuValueEl.querySelector(".btnSKU")) {
+				const skuValue = skuValueEl.textContent.trim();
+				skuValueEl.textContent = "";
+
+				const divSKU = document.createElement("div");
+				divSKU.className = "btnBlock btnSKU";
+				divSKU.textContent = skuValue;
+				skuValueEl.appendChild(divSKU);
+			}
+
+			const match = qtyElement.textContent
+				.trim()
+				.match(/Выделено\s+(\d+)\s+из\s+(\d+)/);
+
+			if (match) {
+				const selected = Number(match[1]);
+				const total = Number(match[2]);
+
+				if (selected > 1 && total > 1) {
+					qtyElement.classList.add("counted");
+				}
+			}
+		});
 	}
-})
+	detailRoot.querySelectorAll("ul > li").forEach((item) => {
+		item.querySelectorAll(".counted").forEach((el) => el.classList.remove("counted"));
+	
+		const qtyElement = [...item.querySelectorAll("span, div")].find((el) =>
+			/^Выделено\s+\d+\s+из\s+\d+$/.test(el.textContent.trim())
+		);
+		if (!qtyElement) return;
+	
+		const match = qtyElement.textContent
+			.trim()
+			.match(/^Выделено\s+(\d+)\s+из\s+(\d+)$/);
+	
+		if (match && Number(match[1]) > 1 && Number(match[2]) > 1) {
+			qtyElement.classList.add("counted");
+		}
+	});
+	
+});
 
-
-observer.observe(document, { childList: true, subtree: true });
+observer.observe(document.body || document, { childList: true, subtree: true });
